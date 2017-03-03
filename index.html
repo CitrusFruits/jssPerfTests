@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<body>
+		<div>
+			<label for="10000x20">10,0000 rules, 20 declarations per rule</label>
+			<button id="10000x20">Go</button>
+			<span id="10000x20_result"></span>
+		</div>
+		<div>
+			<label for="10000x10">10,0000 rules, 10 declarations per rule</label>
+			<button id="10000x10">Go</button>
+			<span id="10000x10_result"></span>
+		</div>
+		<div>
+			<label for="3000x10">3,0000 rules, 10 declarations per rule</label>
+			<button id="3000x10">Go</button>
+			<span id="3000x10_result"></span>
+		</div>
+		<div>
+			<label for="1550x10">1,550 rules, 10 declarations per rule</label>
+			<button id="1550x10">Go</button>
+			<span id="1550x10_result"></span>
+		</div>
+		<div>
+			<label for="1550x3">1,550 rules, 3 declarations per rule</label>
+			<button id="1550x3">Go</button>
+			<span id="1550x3_result"></span>
+		</div>
+	</body>
+	<!-- jss -->
+	<script src="jss.min.js"></script>
+	<!-- jss plugins -->
+	<script src="jss-camel-case.min.js"></script>
+	<script src="jss-vendor-prefixer.min.js"></script>
+	<script src="jss-nested.min.js"></script>
+	<!-- jQuery -->
+	<script
+	  src="https://code.jquery.com/jquery-1.12.4.min.js"
+	  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+	  crossorigin="anonymous"></script>
+  <script src="testThemes.jss.js"></script>
+	<script>
+		var jss = jss.default,
+			iterations = 100;
+
+		jss.use(jssCamelCase.default());
+		jss.use(jssVendorPrefixer.default());
+		jss.use(jssNested.default());
+
+		console.time('jss create/attach sheet');
+
+		var runPerf = function(theme, resultId){
+			var total,
+				average,
+				startTime = new Date();
+			for (var i = iterations - 1; i >= 0; i--) {
+				console.log('iterations left', i);
+				var stylesheet = jss.createStyleSheet(theme),
+					jssClasses = stylesheet.attach().classes;
+					jss.removeStyleSheet(stylesheet)
+			}
+			total =  new Date().getTime() - startTime.getTime(),
+			average = total/iterations;
+			console.log('Total', total);
+			console.log('average', average);
+			$('#' + resultId).text('average: ' + Math.floor(average) + 'ms')
+		};
+
+		$('#10000x20').click(function(){
+			$('#10000x20_result').text('evaluating...');
+			setTimeout(function(){runPerf(testTheme10000x20, '10000x20_result');}, 0);
+		});
+		$('#10000x10').click(function(){
+			$('#10000x10_result').text('evaluating...');
+			setTimeout(function(){runPerf(testTheme10000x10, '10000x10_result');}, 0);
+		});
+		$('#3000x10').click(function(){
+			$('#3000x10_result').text('evaluating...');
+			setTimeout(function(){runPerf(testTheme3000x10, '3000x10_result');}, 0);
+		});
+		$('#1550x10').click(function(){
+			$('#1550x10_result').text('evaluating...');
+			setTimeout(function(){runPerf(testTheme1550x10, '1550x10_result');}, 0);
+		});
+		$('#1550x3').click(function(){
+			$('#1550x3_result').text('evaluating...');
+			setTimeout(function(){runPerf(testTheme1550x3, '1550x3_result');}, 0);
+		});
+	</script>
+</head>
+<body>
+</body>
+</html>
